@@ -184,6 +184,49 @@ app.get("/v1/user/:id/", cors({
     }
 });
 
+app.get("/v1/invite/:code", async (req, res) => {
+    const code = req.params.code;
+
+    if (!code || typeof code !== "string") {
+        console.warn("Invalid invitation code provided :", code);
+        return res.status(400).send({ message: "Invalid invite code." });
+    }
+
+    try {
+        // Vérifiez si l'invitation est dans le cache
+        const cached = await client.get(`invite_${code}`);
+        if (cached) {
+            console.log(`Cache hit pour invite_${code}`);
+            return res.json(JSON.parse(cached));
+        }
+
+        console.log(`Missed cache for invite_${code}. Discord API Request.`);
+        const response = await fetch(`https://discord.com/api/v10/invites/${code}?with_counts=true&with_expiration=true`, {
+            headers: { "Content-Type": "application/json" },
+        });
+
+        if (!response.ok) {
+            console.warn("Discord API error for invitation :", code);
+            await client.setEx(`invite_${code}`, 600, JSON.stringify({ error: "Failed to fetch invite details.", code: response.status }));
+            return res.status(200).send({ error: "Failed to fetch invite details.", code: response.status });
+        }
+
+        const json = await response.json();
+
+        const output = {
+            json
+        };
+
+       
+        await client.setEx(`invite_${code}`, 3600, JSON.stringify(output));
+        console.log(`Updated cache for invite_${code}`);
+        res.json(output);
+    } catch (error) {
+        console.error("Error retrieving invitation information :", error);
+        res.status(500).send({ error: "Internal server error" });
+    }
+});
+
 app.get("*", function (req, res) {
     res.status(404).send("404 - Not Found");
 });
