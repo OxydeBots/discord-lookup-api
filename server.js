@@ -61,12 +61,13 @@ app.get("/v1/guild/:id", cors({
                     return;
                 }
 
-                let output = {
-                    id: json.id,
-                    name: json.name,
-                    instant_invite: json.instant_invite,
-                    presence_count: json.presence_count
-                }
+                const output = {
+                     id: json.id,
+                     name: json.name,
+                     instant_invite: json.instant_invite,
+                     presence_count: json.presence_count,
+                     channels: json.channels
+                   };
 
                 res.send(output);
                 client.setEx(`guild_${id}`, 10800, JSON.stringify(output))
