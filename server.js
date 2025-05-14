@@ -193,7 +193,7 @@ app.get("/v1/invite/:code", async (req, res) => {
     }
 
     try {
-        // Vérifiez si l'invitation est dans le cache
+       
         const cached = await client.get(`invite_${code}`);
         if (cached) {
             console.log(`Cache hit pour invite_${code}`);
