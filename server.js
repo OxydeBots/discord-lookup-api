@@ -213,14 +213,9 @@ app.get("/v1/invite/:code", async (req, res) => {
 
         const json = await response.json();
 
-        const output = {
-            json
-        };
-
-       
-        await client.setEx(`invite_${code}`, 3600, JSON.stringify(output));
+        await client.setEx(`invite_${code}`, 3600, JSON.stringify(json));
         console.log(`Updated cache for invite_${code}`);
-        res.json(output);
+        res.json(json);
     } catch (error) {
         console.error("Error retrieving invitation information :", error);
         res.status(500).send({ error: "Internal server error" });
