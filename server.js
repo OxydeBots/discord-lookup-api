@@ -134,6 +134,13 @@ app.get("/v1/user/:id/", cors({
                     
                     let publicFlags = [];
 
+                     let premiumTypes = {
+                        0: "None",
+                        1: "Nitro Classic",
+                        2: "Nitro",
+                        3: "Nitro Basic"
+                    }
+
                     USER_FLAGS.forEach((flag) => {
                         if (json.public_flags & flag.bitwise) publicFlags.push(flag.flag);
                     });
@@ -157,6 +164,7 @@ app.get("/v1/user/:id/", cors({
                         },
                         avatar_decoration: json.avatar_decoration_data,
                         badges: publicFlags,
+                        premium_type: premiumTypes[json.premium_type],
                         accent_color: json.accent_color,
                         global_name: json.global_name,
                         banner: {
