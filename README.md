@@ -34,7 +34,7 @@ Right now, you must specify an ID to the link (a proper website is currently in 
 
 ### Example
 
-`https://discordlookup.mesalytic.moe/v1/user/604779545018761237`
+`https://discordlookup.mesalytic.moe/v1/user/547744111419981825`
 
 ```json
 {
