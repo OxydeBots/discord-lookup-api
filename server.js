@@ -202,7 +202,7 @@ app.get("/v1/invite/:code", async (req, res) => {
         }
 
         console.log(`Missed cache for invite_${code}. Discord API Request.`);
-        const response = await fetch(`https://discord.com/api/v10/invites/${code}?with_counts=true&with_expiration=true`, {
+        const response = await fetch(`https://discord.com/api/v10/invites/${code}`, {
             headers: { "Content-Type": "application/json" },
         });
 
