@@ -1,5 +1,7 @@
 # discord-lookup-api
 
+## Project has been offline for some time now, it will not receive updates as this actually breaches ToS
+
 Discord Lookup API is an API that lets you, with a given ID, get basic informations about a user
 
 The API returns :
